@@ -8,10 +8,8 @@ router.get('/', function (req, res, next) {
 // req: 클라이언트 정보를 담고 있다.
 // res: 클라이언트 응답을 위한 객체
 router.post('/users', function (req, res, next) {
-    return res.json({
-        name: req.body.name,
-        quote: req.body.quote,
-    });
+    console.log('req body', req.body);
+    return res.json(req.body);
 });
 
 module.exports = router;
