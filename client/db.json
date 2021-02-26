@@ -1,24 +1,24 @@
 {
-  "todos": [
+  "posts": [
     {
       "id": 1,
-      "content": "HTML",
-      "completed": true
+      "content": "테스트 포스트 입니다.1",
+      "addedAt": "Feb. 6, 2021, 1:13 p.m."
     },
     {
       "id": 2,
-      "content": "CSS",
-      "completed": false
+      "content": "테스트 포스트 입니다.2",
+      "addedAt": "Feb. 6, 2021, 2:13 p.m."
     },
     {
       "id": 3,
-      "content": "Javascript",
-      "completed": true
+      "content": "테스트 포스트 입니다.3",
+      "addedAt": "Feb. 6, 2021, 3:13 p.m."
     },
     {
       "id": 4,
-      "content": "React",
-      "completed": true
+      "content": "테스트 포스트 입니다.4",
+      "addedAt": "Feb. 6, 2021, 4:13 p.m."
     }
   ],
   "users": [
