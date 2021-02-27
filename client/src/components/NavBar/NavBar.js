@@ -1,10 +1,10 @@
-import React, {useState, useCallback, useMemo} from "react";
-import {useHistory, useLocation} from "react-router-dom";
-import styled from "styled-components";
-import {Backdrop, Fade} from "@material-ui/core";
+import React, {useState, useCallback, useMemo} from 'react';
+import {useHistory, useLocation} from 'react-router-dom';
+import styled from 'styled-components';
+import {Backdrop, Fade} from '@material-ui/core';
 
-import StyledModal from "components/Parts/Modal";
-import LoginModal from "components/LoginModal";
+import StyledModal from 'components/Parts/Modal';
+import LoginModal from 'components/LoginModal';
 
 const NavBar = ({...p}) => {
     const [currentTab, setCurrentTab] = useState(0);
@@ -14,16 +14,16 @@ const NavBar = ({...p}) => {
 
     const tabs = useMemo(
         () => [
-            {id: 0, label: "Home", path: "/"},
-            {id: 1, label: "Blog", path: "/blog"},
-            {id: 2, label: "About", path: "/about"},
+            {id: 0, label: 'Home', path: '/'},
+            {id: 1, label: 'Blog', path: '/blog'},
+            {id: 2, label: 'About', path: '/about'},
             {
                 id: 3,
-                label: "Board",
+                label: 'Board',
                 dropdownList: [
-                    {id: 0, label: "자유 게시판", path: "/board/1"},
-                    {id: 1, label: "Q&A", path: "/board/2"},
-                    {id: 2, label: "웹 사이트 자랑하기", path: "/board/3"},
+                    {id: 0, label: '자유 게시판', path: '/board/1'},
+                    {id: 1, label: 'Q&A', path: '/board/2'},
+                    {id: 2, label: '웹 사이트 자랑하기', path: '/board/3'},
                 ],
             },
         ],
@@ -32,7 +32,7 @@ const NavBar = ({...p}) => {
 
     const moveToClickedPage = useCallback(
         tab => {
-            if (tab === 0) history.push("/");
+            if (tab === 'logo') history.push('/');
 
             setCurrentTab(tab.id);
 
@@ -57,7 +57,7 @@ const NavBar = ({...p}) => {
 
     return (
         <Tabs {...p}>
-            <Typography onClick={() => moveToClickedPage(0)}>Hanwha Project</Typography>
+            <Typography onClick={() => moveToClickedPage('logo')}>Hanwha Project</Typography>
             {tabs.map(tab => (
                 <Tab
                     key={tab.id}
