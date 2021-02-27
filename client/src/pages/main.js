@@ -2,37 +2,42 @@ import React from "react";
 import styled from "styled-components";
 
 import Mini from "components/Blog/Mini";
+import MainLayout from "components/Layout/MainLayout";
 
 const Main = () => {
     return (
-        <Container>
-            <Section left>
-                <Title>Hello React World</Title>
-                <p>
-                    파이썬 진영의 가장 대표적인 웹프레임워크 중 하나인 django를 이용하여 여러분만의 블로그 사이트를
-                    만들어보세요.
-                </p>
-            </Section>
-            <Section right>
-                <Title>Blog - Recent posts</Title>
-                <List>
-                    <Mini />
-                    <Mini />
-                    <Mini />
-                    <Mini />
-                    <Mini />
-                </List>
-            </Section>
-        </Container>
+        <MainLayout>
+            <Content>
+                <Section>
+                    <Title>Hello React World</Title>
+                    <p>
+                        파이썬 진영의 가장 대표적인 웹프레임워크 중 하나인 django를 이용하여 여러분만의 블로그 사이트를
+                        만들어보세요.
+                    </p>
+                </Section>
+                <Section>
+                    <Title>Blog - Recent posts</Title>
+                    <List>
+                        <Mini />
+                        <Mini />
+                        <Mini />
+                        <Mini />
+                        <Mini />
+                    </List>
+                </Section>
+            </Content>
+        </MainLayout>
     );
 };
 
 export default Main;
 
-const Container = styled.div`
+const Content = styled.main`
     display: flex;
-    position: relative;
-    color: #ffffff;
+    width: 100%;
+    height: 100%;
+    max-width: 1180px;
+    justify-content: space-between;
 `;
 
 const Section = styled.section`
@@ -41,12 +46,6 @@ const Section = styled.section`
     min-width: 410px;
     font-size: 1rem;
     line-height: 1.5;
-
-    position: absolute;
-
-    ${p => p.left && ` left: 0`};
-
-    ${p => p.right && `right: 0`};
 `;
 
 const Title = styled.div`

@@ -1,7 +1,9 @@
-import React from 'react';
+import React from "react";
+
+import CommonLayout from "components/Layout/CommonLayout";
 
 const about = () => {
-    return <div>안녕 날 소개하지</div>;
+    return <CommonLayout>안녕 날 소개하지</CommonLayout>;
 };
 
 export default about;

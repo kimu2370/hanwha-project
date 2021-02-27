@@ -3,13 +3,13 @@ import ReactDOM from "react-dom";
 import {ThemeProvider} from "styled-components";
 import theme from "theme";
 
-import App from "./App";
+import Routes from "./routes";
 import GlobalStyles from "./style";
 
 ReactDOM.render(
     <ThemeProvider theme={theme}>
         <GlobalStyles />
-        <App />
+        <Routes />
     </ThemeProvider>,
     document.getElementById("root")
 );

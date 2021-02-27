@@ -17,7 +17,6 @@ export default Mini;
 const Box = styled.div`
     display: flex;
     flex-direction: column;
-    width: 100%;
     padding: 20px;
     border-radius: 3px;
 

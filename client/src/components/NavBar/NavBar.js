@@ -6,7 +6,7 @@ import {Backdrop, Fade} from "@material-ui/core";
 import StyledModal from "components/Parts/Modal";
 import LoginModal from "components/LoginModal";
 
-const NavBar = () => {
+const NavBar = ({...p}) => {
     const [currentTab, setCurrentTab] = useState(0);
     const [openModal, setOpenModal] = useState(false);
     const [active, setActive] = useState(false);
@@ -56,7 +56,7 @@ const NavBar = () => {
     };
 
     return (
-        <Tabs>
+        <Tabs {...p}>
             <Typography onClick={() => moveToClickedPage(0)}>Hanwha Project</Typography>
             {tabs.map(tab => (
                 <Tab
