@@ -6,12 +6,15 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 const settings = {
-    dots: true,
+    accessibility: true,
+    className: 'center',
+    centerMode: true,
+    centerPadding: '60px',
     infinite: true,
     slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 1000,
+    autoplaySpeed: 3000,
     pauseOnHover: true,
 };
 
@@ -36,8 +39,8 @@ const about = () => {
             </Section>
             <Section card>
                 <H1 spacing>PORTFOLIO</H1>
-                <Portfolio>
-                    <Slider {...settings}>
+                <div>
+                    <StyledSlider {...settings}>
                         <CardBox>
                             <CardImg src="https://media.vlpt.us/images/hyundong_kk/post/d44d940d-344b-4bcf-8980-52b66265add2/Ekran-Resmi-2019-11-18-18.08.13.png" />
                             <CardBody>
@@ -66,8 +69,8 @@ const about = () => {
                                 <Text>사용자 인터페이스를 만들기 위한 JavaScript 라이브러리</Text>
                             </CardBody>
                         </CardBox>
-                    </Slider>
-                </Portfolio>
+                    </StyledSlider>
+                </div>
             </Section>
         </CommonLayout>
     );
@@ -96,23 +99,21 @@ const Box = styled.div`
     flex-direction: column;
 `;
 
-const Portfolio = styled.div`
-    display: flex;
-    > :not(:last-child) {
-        margin-right: 1rem;
-    }
-    overflow-x: scroll;
+const StyledSlider = styled(Slider)`
+    text-align: center;
 `;
 
 const CardBox = styled.div`
     display: flex;
     flex-direction: column;
-    max-width: 288px;
+    max-width: 300px;
 `;
 
 const CardImg = styled.img.attrs(() => ({
     alt: 'image',
-}))``;
+}))`
+    width: 100%;
+`;
 
 const CardBody = styled.div`
     padding: 1.25rem;
