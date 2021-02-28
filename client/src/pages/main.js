@@ -1,8 +1,8 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import Mini from "components/Blog/Mini";
-import MainLayout from "components/Layout/MainLayout";
+import Mini from 'components/Blog/Mini';
+import MainLayout from 'components/Layout/MainLayout';
 
 const Main = () => {
     return (
@@ -10,10 +10,12 @@ const Main = () => {
             <Content>
                 <Section>
                     <Title>Hello React World</Title>
-                    <p>
-                        파이썬 진영의 가장 대표적인 웹프레임워크 중 하나인 django를 이용하여 여러분만의 블로그 사이트를
-                        만들어보세요.
-                    </p>
+                    <P>리액트는 사용자 인터페이스를 만들기 위한 JavaScript 라이브러리입니다.</P>
+                    <List>
+                        <Li>React는 상호작용이 많은 UI를 만들 때 생기는 어려움을 줄여줍니다.</Li>
+                        <Li>애플리케이션의 각 상태에 대한 간단한 뷰만 설계하세요.</Li>
+                        <Li>그럼 React는 데이터가 변경됨에 따라 적절한 컴포넌트만 갱신합니다.</Li>
+                    </List>
                 </Section>
                 <Section>
                     <Title>Blog - Recent posts</Title>
@@ -51,6 +53,7 @@ const Section = styled.section`
 const Title = styled.div`
     font-size: 2.5rem;
     font-weight: 500;
+    margin-bottom: 1rem;
 `;
 
 const List = styled.div`
@@ -60,4 +63,13 @@ const List = styled.div`
     > div:not(:last-child) {
         margin-bottom: 8px;
     }
+`;
+
+const P = styled.p`
+    font-size: 1rem;
+    margin-bottom: 1rem;
+`;
+
+const Li = styled.li`
+    line-height: 1.8;
 `;

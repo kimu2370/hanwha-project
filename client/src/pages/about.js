@@ -1,16 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import Slider from 'react-slick';
+
 import CommonLayout from 'components/Layout/CommonLayout';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 const settings = {
     accessibility: true,
-    className: 'center',
-    centerMode: true,
-    centerPadding: '60px',
     infinite: true,
+    centerMode: true,
     slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,
@@ -101,6 +100,24 @@ const Box = styled.div`
 
 const StyledSlider = styled(Slider)`
     text-align: center;
+
+    .slick-prev {
+        left: -50px;
+    }
+
+    .slick-next {
+        right: -50px;
+    }
+
+    .slick-prev:before,
+    .slick-next:before {
+        color: black;
+        font-size: 40px;
+    }
+
+    .slick-center {
+        transition: transform 300ms;
+    }
 `;
 
 const CardBox = styled.div`
@@ -140,6 +157,11 @@ const Paragraph = styled.p`
     font-size: 1.5rem;
     font-weight: 300;
     line-height: 1.5;
+    :before {
+        display: block;
+        font-size: 3.5rem;
+        content: '🧑🏻‍💻';
+    }
 `;
 
 const Text = styled.span`
