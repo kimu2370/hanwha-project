@@ -26,20 +26,21 @@ const about = () => {
                     <Paragraph>
                         {`프론트엔드 영역에서 개발을 하고 있습니다.\n오늘의 기록이 내일의 성장이 된다고 믿습니다.`
                             .split('\n')
-                            .map(text => (
-                                <>
-                                    <span>{text}</span>
+                            .map((text, i) => (
+                                <span key={i}>
+                                    {text}
                                     <br />
-                                </>
+                                </span>
                             ))}
                     </Paragraph>
                 </Box>
                 <Img src="./img/img1.png" />
             </Section>
             <Section card>
-                <H1 spacing>PORTFOLIO</H1>
+                <H1 spacing={'spacing'}>PORTFOLIO</H1>
                 <div>
                     <StyledSlider {...settings}>
+                        {/* mock up data */}
                         <CardBox>
                             <CardImg src="https://media.vlpt.us/images/hyundong_kk/post/d44d940d-344b-4bcf-8980-52b66265add2/Ekran-Resmi-2019-11-18-18.08.13.png" />
                             <CardBody>
@@ -142,7 +143,11 @@ const H1 = styled.h1`
     font-weight: 500;
     line-height: 1.2;
     margin-bottom: 2rem;
-    letter-spacing: ${p => p.spacing && ` 2px`};
+    ${p =>
+        p.spacing &&
+        `
+        letter-spacing: 2px;
+    `};
 `;
 
 const H5 = styled.h5`

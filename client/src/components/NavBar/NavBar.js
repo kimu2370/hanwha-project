@@ -1,16 +1,17 @@
-import React, {useState, useCallback, useMemo} from 'react';
+import React, {useState, useCallback, useMemo, useRef, useEffect} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import styled from 'styled-components';
 import {Backdrop, Fade} from '@material-ui/core';
 
 import StyledModal from 'components/Parts/Modal';
 import LoginModal from 'components/LoginModal';
+import useVisible from 'hooks/useVisible';
 
 const NavBar = ({...p}) => {
     const [currentTab, setCurrentTab] = useState(0);
     const [openModal, setOpenModal] = useState(false);
-    const [active, setActive] = useState(false);
     const history = useHistory();
+    const {ref: dropdownRef, isVisible, setIsVisible} = useVisible(false);
 
     const tabs = useMemo(
         () => [
@@ -37,14 +38,14 @@ const NavBar = ({...p}) => {
             setCurrentTab(tab.id);
 
             if (tab.dropdownList) {
-                setActive(!active);
+                setIsVisible(true);
             } else {
-                setActive(false);
+                setIsVisible(false);
             }
 
             history.push(tab.path);
         },
-        [active, history]
+        [history, setIsVisible]
     );
 
     const handleOpenModal = () => {
@@ -66,8 +67,8 @@ const NavBar = ({...p}) => {
                         tab.dropdownList ? (
                             <>
                                 {tab.label}
-                                {active && (
-                                    <Dropdown>
+                                {isVisible && (
+                                    <Dropdown ref={dropdownRef}>
                                         {tab.dropdownList.map(x => (
                                             <div key={x.id}>{x.label}</div>
                                         ))}
@@ -141,6 +142,7 @@ const Tab = styled.div`
         p.clicked &&
         `
         background-color: #EFEFEF;
+        
     `};
 `;
 
@@ -164,12 +166,13 @@ const Dropdown = styled.div`
     left: 3rem;
     width: 180px;
     padding: 0.5rem 0;
-    background-color: #fff;
+    background-color: #ffffff;
     background-clip: padding-box;
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 0.25rem;
+    z-index: 10;
+
     > div {
-        z-index: 1;
         padding: 0.25rem 1.5rem;
         :hover {
             color: #b5b5b5;
