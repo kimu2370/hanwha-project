@@ -1,17 +1,17 @@
 import React, {useState, useCallback, useMemo, useRef, useEffect} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
-import styled from 'styled-components';
-import {Backdrop, Fade} from '@material-ui/core';
+import styled, {keyframes} from 'styled-components';
 
-import StyledModal from 'components/Parts/Modal';
-import LoginModal from 'components/LoginModal';
+import LoginModal from 'components/Modal/LoginModal';
+
 import useVisible from 'hooks/useVisible';
 
 const NavBar = ({...p}) => {
     const [currentTab, setCurrentTab] = useState(0);
     const [openModal, setOpenModal] = useState(false);
-    const history = useHistory();
+    const [authenticated, setAuthenticated] = useState(false);
     const {ref: dropdownRef, isVisible, setIsVisible} = useVisible(false);
+    const history = useHistory();
 
     const tabs = useMemo(
         () => [
@@ -52,10 +52,6 @@ const NavBar = ({...p}) => {
         setOpenModal(true);
     };
 
-    const handleCloseModal = () => {
-        setOpenModal(false);
-    };
-
     return (
         <Tabs {...p}>
             <Typography onClick={() => moveToClickedPage('logo')}>Hanwha Project</Typography>
@@ -83,20 +79,8 @@ const NavBar = ({...p}) => {
                     onClick={() => moveToClickedPage(tab)}
                 />
             ))}
-            <LoginTab onClick={handleOpenModal}>Login</LoginTab>
-            <StyledModal
-                open={openModal}
-                onClose={handleCloseModal}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 500,
-                }}
-            >
-                <Fade in={openModal}>
-                    <LoginModal onClose={handleCloseModal}></LoginModal>
-                </Fade>
-            </StyledModal>
+            <LoginTab onClick={handleOpenModal}>{authenticated ? 'Log out' : 'Log in'}</LoginTab>
+            <LoginModal open={openModal} setOpen={setOpenModal} />
         </Tabs>
     );
 };
@@ -151,6 +135,27 @@ const LoginTab = styled(Tab)`
     right: 0;
 `;
 
+const flutter = keyframes`
+    0% {
+        transform: rotate(0deg);
+    }
+    35% {
+        transform: rotate(0deg);
+    }
+    40% {
+        transform: rotate(-5deg);
+    }
+    60% {
+        transform: rotate(5deg);
+    }
+    65% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+`;
+
 const Typography = styled.div`
     cursor: pointer;
     display: flex;
@@ -158,6 +163,8 @@ const Typography = styled.div`
     font-size: 1.2rem;
     font-weight: bold;
     padding: 0 30px 0 0;
+    transform-origin: center;
+    animation: ${flutter} 2s linear infinite;
 `;
 
 const Dropdown = styled.div`

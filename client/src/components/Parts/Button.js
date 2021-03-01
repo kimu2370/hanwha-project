@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import React from "react";
+import styled from 'styled-components';
+import React from 'react';
 
 const Button = styled.div`
     border-radius: 3px;
@@ -13,25 +13,29 @@ const Button = styled.div`
     cursor: pointer;
     user-select: none;
     transition: all 0.1s linear;
-    color: #ffffff;
-    background-color: ${p => p.theme.gdacColor};
 
     :hover {
         opacity: 0.8;
     }
 
     ${p =>
-        p.big &&
+        p.btnType === 'login' &&
         `
         width: 250px;
         padding: 16px;
         font-size: 16px;
+        color: #ffffff;
+        background-color: ${p.theme.gdacColor};
+
     `};
 
     ${p =>
-        p.small &&
+        p.btnType === 'close' &&
         `
-        padding: 4px 16px;
+        padding: 12px 16px;
+        color: #ffffff;
+        background-color: #6c757d;
+        border-color: #6c757d;
     `};
 `;
 

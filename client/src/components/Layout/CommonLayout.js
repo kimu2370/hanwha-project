@@ -7,7 +7,7 @@ const CommonLayout = ({children}) => {
     return (
         <Wrapper>
             {children}
-            <Footer>Copyright © Hanwha project 2021</Footer>
+            <Footer>Copyright © dev_Hyun 2021</Footer>
         </Wrapper>
     );
 };

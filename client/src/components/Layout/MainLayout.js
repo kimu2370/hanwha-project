@@ -7,7 +7,7 @@ const MainLayout = ({children}) => {
     return (
         <Wrapper>
             {children}
-            <Footer>Copyright © Hanwha project 2021</Footer>
+            <Footer>Copyright © dev_Hyun 2021</Footer>
         </Wrapper>
     );
 };
@@ -21,7 +21,7 @@ const Wrapper = styled.div`
     position: absolute;
     z-index: -1;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 58px);
     color: #ffffff;
     background-color: ${p => p.theme.gdacColor};
 `;

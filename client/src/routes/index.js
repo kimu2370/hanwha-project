@@ -26,7 +26,7 @@ export default Routes;
 
 const NavbarWrapper = styled.div`
     width: 100%;
-    padding: 8px 0;
+    padding: 12px 0;
     color: gray;
     > div {
         margin: 0 auto;

@@ -1,10 +1,10 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import Button from "components/Parts/Button";
-import Post from "components/Blog/Post";
-import CommonLayout from "components/Layout/CommonLayout";
-import ButtonBase from "components/Parts/Button";
+import Button from 'components/Parts/Button';
+import Post from 'components/Blog/Post';
+import CommonLayout from 'components/Layout/CommonLayout';
+import ButtonBase from 'components/Parts/Button';
 
 const Blog = () => {
     return (
@@ -25,12 +25,20 @@ const Blog = () => {
                         <CardHeader>Search</CardHeader>
                         <CardBody>
                             <SearchInput />
-                            <StyledButton small>GO!</StyledButton>
+                            <StyledButton>GO!</StyledButton>
                         </CardBody>
                     </CardBox>
                     <CardBox>
                         <CardHeader>Categories</CardHeader>
-                        <CardBody></CardBody>
+                        <Categories>
+                            {/* mockup data */}
+                            <li>
+                                <button>Programming(2)</button>
+                            </li>
+                            <li>
+                                <button>미분류(1)</button>
+                            </li>
+                        </Categories>
                     </CardBox>
                 </StickyBox>
             </Wrapper>
@@ -59,6 +67,7 @@ const StickyBox = styled.div`
     margin-top: 4.3rem;
     flex: 1;
     padding-left: 910px;
+    z-index: -1;
 `;
 
 const CardBox = styled.div`
@@ -82,13 +91,39 @@ const CardBody = styled.div`
     padding: 1.25rem;
 `;
 
-const SearchInput = styled.input`
+const Categories = styled(CardBody)`
+    flex-direction: column;
+    > li {
+        margin-bottom: 1rem;
+    }
+    > li > button {
+        font-size: 1rem;
+        outline: none;
+        border: none;
+        background-color: #ffffff;
+        color: dodgerblue;
+        :hover {
+            cursor: pointer;
+            text-decoration: underline;
+            opacity: 0.8;
+        }
+    }
+`;
+
+const SearchInput = styled.input.attrs(() => ({
+    placeholder: 'Search for...',
+}))`
     width: 100%;
     padding: 5px;
+    font-size: 1rem;
 `;
 
 const StyledButton = styled(ButtonBase)`
     padding: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #ffffff;
+    background-color: #6c757d;
 `;
 
 const Title = styled.h1`
@@ -113,4 +148,5 @@ const Tag = styled(Button)`
     font-weight: 700;
     line-height: 1;
     background-color: gray;
+    color: #ffffff;
 `;
