@@ -1,21 +1,16 @@
-import React, {useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
+import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
+import ReactMarkdownWithHtml from 'react-markdown/with-html';
+import marked from 'marked';
 
 import Tags from 'components/Blog/Tags';
 import Button from 'components/Parts/Button';
 
-const text = `[PYCON 2017] 개발자 없는 통계업무 부서에서 Django+Pandas+Selenium+python-docx으로
-통계업무도구 만들기 <br />
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-Ipsum has been the industry's standard dummy text ever since the 1500s, when an
-unknown printer took a galley of type and scrambled it to make a type specimen book.
-It has survived not only five centuries, but also the leap into electronic
-typesetting, remaining essentially unchanged. It was popularised in the 1960s with
-the release of Letraset sheets containing Lorem Ipsum passages, and more recently
-with desktop publishing software like Aldus PageMaker including versions of Lorem
-Ipsum.`;
-
 const Post = ({...p}) => {
+    const history = useHistory();
+    const [markdown, setMarkdown] = useState('');
+
     const replaceOverText = useCallback(text => {
         // fetched data의 blog text에 생략기호 대체.
         if (typeof text !== 'string') return;
@@ -27,7 +22,22 @@ const Post = ({...p}) => {
         if (LIMIT_TEXT_LEN <= text.length) {
             result = text.slice(0, LIMIT_TEXT_LEN) + ELLIPSIS;
         }
-        return {__html: result};
+        return result;
+    }, []);
+
+    const moveToPage = useCallback(() => {
+        history.push('board/1');
+    }, [history]);
+
+    useEffect(() => {
+        fetch('http://localhost:3000/markdown/post-1.md')
+            .then(res => {
+                return res.text();
+            })
+            .then(text => {
+                const markedText = marked(text);
+                setMarkdown(markedText);
+            });
     }, []);
 
     return (
@@ -36,15 +46,23 @@ const Post = ({...p}) => {
                 src="https://doitdjango.com/media/blog/images/2021/02/06/nicole-baster-6_y5Sww0-h4-unsplash.jpg"
                 alt="image"
             />
-            <Title>623페이지 정정: letsencrypt 인증서 발급</Title>
-            <SubTitle dangerouslySetInnerHTML={replaceOverText(text)} />
-            <Content></Content>
+            <StyleMD children={markdown} allowDangerousHtml />
             <Tags />
+            <ReadMore onClick={moveToPage}>Read More</ReadMore>
         </Box>
     );
 };
 
 export default Post;
+
+const StyleMD = styled(ReactMarkdownWithHtml)`
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -webkit-line-clamp: 6; /* 라인수 */
+    -webkit-box-orient: vertical;
+    word-wrap: break-word;
+`;
 
 const Box = styled.div`
     display: flex;
@@ -66,19 +84,27 @@ const Box = styled.div`
     }
 `;
 
-const Img = styled.img``;
+const Img = styled.img.attrs(() => ({
+    alt: 'image',
+}))``;
 
-const Title = styled.h1`
-    font-size: 2rem;
+const ReadMore = styled(Button)`
+    display: flex;
+    justify-content: flex-start;
+
+    width: 97px;
+    margin: 0 1.25rem 1.5rem 1.2rem;
+    font-size: 1rem;
+    line-height: 2.5;
+
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+
+    ::after {
+        margin-left: 5px;
+        content: '→';
+    }
 `;
-
-const SubTitle = styled.h5`
-    font-size: 1.25rem;
-    opacity: 0.5;
-`;
-
-const Content = styled.main``;
-
-const ReadMore = styled(Button)``;
 
 const Created = styled.footer``;

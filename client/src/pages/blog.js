@@ -1,12 +1,21 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import styled from 'styled-components';
 
+import {FaArrowAltCircleUp} from 'react-icons/fa';
 import Button from 'components/Parts/Button';
 import Post from 'components/Blog/Post';
 import CommonLayout from 'components/Layout/CommonLayout';
 import ButtonBase from 'components/Parts/Button';
 
-const Blog = () => {
+const Blog = React.forwardRef((props, ref) => {
+    const handleClickUp = useCallback(() => {
+        if (ref && ref.current) {
+            ref.current.scrollIntoView({
+                behavior: 'smooth',
+            });
+        }
+    }, [ref]);
+
     return (
         <CommonLayout>
             <Wrapper>
@@ -42,9 +51,10 @@ const Blog = () => {
                     </CardBox>
                 </StickyBox>
             </Wrapper>
+            <ArrowUp onClick={handleClickUp} />
         </CommonLayout>
     );
-};
+});
 
 export default Blog;
 
@@ -53,6 +63,7 @@ const Wrapper = styled.div`
     width: 100%;
     height: 100%;
     max-width: 1180px;
+    margin-top: 3rem;
 `;
 
 const Container = styled.div`
@@ -63,11 +74,7 @@ const Container = styled.div`
 `;
 
 const StickyBox = styled.div`
-    position: fixed;
-    margin-top: 4.3rem;
-    flex: 1;
-    padding-left: 910px;
-    z-index: -1;
+    margin-top: 3.5rem;
 `;
 
 const CardBox = styled.div`
@@ -78,7 +85,7 @@ const CardBox = styled.div`
     margin-bottom: 2rem;
 `;
 
-const CardHeader = styled.h5`
+const CardHeader = styled.div`
     padding: 12px 20px;
     font-size: 1.25rem;
     font-weight: 500;
@@ -130,7 +137,6 @@ const Title = styled.h1`
     text-align: left;
     font-size: 2.5rem;
     font-weight: 500;
-    margin-top: 1rem;
     margin-bottom: 0.5rem;
 `;
 
@@ -149,4 +155,25 @@ const Tag = styled(Button)`
     line-height: 1;
     background-color: gray;
     color: #ffffff;
+`;
+
+const ArrowUp = styled(FaArrowAltCircleUp).attrs(() => ({
+    fill: 'gray',
+    stroke: 'gray',
+    strokeWidth: 20,
+}))`
+    position: fixed;
+    font-size: 3rem;
+    right: 80px;
+    bottom: 36px;
+    z-index: 100;
+    background-color: #ffffff;
+    border-radius: 50%;
+
+    :hover {
+        transform: scale(1.07);
+        transition: transform 200ms;
+        cursor: pointer;
+        opacity: 0.8;
+    }
 `;

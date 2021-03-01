@@ -21,7 +21,7 @@ const Wrapper = styled.div`
     position: absolute;
     z-index: -1;
     width: 100%;
-    height: calc(100% - 58px);
+    height: calc(100% - 63px);
     color: #ffffff;
     background-color: ${p => p.theme.gdacColor};
 `;

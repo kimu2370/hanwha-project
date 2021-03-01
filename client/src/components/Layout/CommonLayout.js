@@ -17,6 +17,7 @@ export default CommonLayout;
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
+    position: relative;
     align-items: center;
     position: absolute;
     z-index: -1;

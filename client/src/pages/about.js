@@ -153,6 +153,7 @@ const CardBox = styled.div`
         transform: scale(1.03);
         opacity: 0.8;
         transition: all 200ms;
+        cursor: pointer;
     }
 `;
 
