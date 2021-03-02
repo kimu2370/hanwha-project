@@ -68,7 +68,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     background-color: #ffffff;
-    border-radius: 3px;
+    border-radius: 0.25rem;
     min-width: ${p => p.size || '500px'};
     max-width: ${p => p.size || '500px'};
     outline: none;
@@ -131,7 +131,7 @@ const Close = styled.button`
     right: 20px;
 
     font-size: 25px;
-    border-radius: 3px;
+    border-radius: 0.25rem;
 
     padding: 0 15px 2px 15px;
 

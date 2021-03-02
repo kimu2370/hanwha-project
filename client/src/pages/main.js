@@ -1,10 +1,26 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 
 import Mini from 'components/Blog/Mini';
 import MainLayout from 'components/Layout/MainLayout';
 
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 const Main = () => {
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        const getPosts = async () => {
+            const response = await axios.get(`${SERVER_URL}/posts`);
+            return response.data;
+        };
+
+        getPosts().then(res => {
+            setData(res);
+        });
+    }, []);
+
     return (
         <MainLayout>
             <Content>
@@ -20,11 +36,9 @@ const Main = () => {
                 <Section>
                     <Title>Blog - Recent posts</Title>
                     <List>
-                        <Mini />
-                        <Mini />
-                        <Mini />
-                        <Mini />
-                        <Mini />
+                        {data.map(post => (
+                            <Mini key={post.id} post={post} />
+                        ))}
                     </List>
                 </Section>
             </Content>

@@ -1,13 +1,25 @@
-import React, {useCallback} from 'react';
+import React, {useState, useCallback, useEffect, useMemo} from 'react';
+import {useHistory, useLocation} from 'react-router-dom';
+import qs from 'querystring';
+import axios from 'axios';
 import styled from 'styled-components';
 
 import {FaArrowAltCircleUp} from 'react-icons/fa';
-import Button from 'components/Parts/Button';
 import Post from 'components/Blog/Post';
 import CommonLayout from 'components/Layout/CommonLayout';
 import ButtonBase from 'components/Parts/Button';
 
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 const Blog = React.forwardRef((props, ref) => {
+    const history = useHistory();
+    const location = useLocation();
+
+    const [posts, setPosts] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const query = useMemo(() => qs.parse(location.search.slice(1)), [location]);
+    console.log(query);
+
     const handleClickUp = useCallback(() => {
         if (ref && ref.current) {
             ref.current.scrollIntoView({
@@ -16,17 +28,56 @@ const Blog = React.forwardRef((props, ref) => {
         }
     }, [ref]);
 
+    const handleClickSearch = useCallback(
+        text => {
+            history.push({
+                pathname: location.pathname,
+                search: qs.stringify({q: text}),
+            });
+        },
+        [history, location.pathname]
+    );
+
+    useEffect(() => {
+        const getPosts = async () => {
+            const response = await axios.get(`${SERVER_URL}/posts`);
+            return response.data;
+        };
+        const getCategories = async () => {
+            const response = await axios.get(`${SERVER_URL}/categories`);
+            return response.data;
+        };
+
+        getPosts().then(res => {
+            setPosts(res);
+        });
+        getCategories().then(res => {
+            setCategories(res);
+        });
+    }, []);
+
+    useEffect(() => {
+        if (query.q) {
+            axios
+                .get(`${SERVER_URL}/posts?q=${query.q}`)
+                .then(res => {
+                    setPosts(res.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    }, [query]);
+
     return (
         <CommonLayout>
             <Wrapper>
                 <Container>
-                    <Title>
-                        Blog <Tag>programming</Tag>
-                    </Title>
+                    <Title>Blog {query.q && <Tag>{query.q}</Tag>}</Title>
                     <Posts>
-                        <StyledPost />
-                        <StyledPost />
-                        <StyledPost />
+                        {posts.map(post => (
+                            <StyledPost key={post.id} post={post} />
+                        ))}
                     </Posts>
                 </Container>
                 <StickyBox>
@@ -40,13 +91,13 @@ const Blog = React.forwardRef((props, ref) => {
                     <CardBox>
                         <CardHeader>Categories</CardHeader>
                         <Categories>
-                            {/* mockup data */}
-                            <li>
-                                <button>Programming(2)</button>
-                            </li>
-                            <li>
-                                <button>미분류(1)</button>
-                            </li>
+                            {categories.map((category, idx) => (
+                                <li key={idx}>
+                                    <button
+                                        onClick={() => handleClickSearch(category.name)}
+                                    >{`${category.name} (${category.cnt})`}</button>
+                                </li>
+                            ))}
                         </Categories>
                     </CardBox>
                 </StickyBox>
@@ -149,7 +200,7 @@ const StyledPost = styled(Post)`
     margin-bottom: 1.5rem;
 `;
 
-const Tag = styled(Button)`
+const Tag = styled(ButtonBase)`
     font-size: 75%;
     font-weight: 700;
     line-height: 1;

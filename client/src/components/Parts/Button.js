@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import React from 'react';
 
 const Button = styled.div`
-    border-radius: 3px;
+    border-radius: 0.25rem;
     font-size: 12px;
     letter-spacing: -0.36px;
     display: inline-flex;
@@ -13,7 +13,6 @@ const Button = styled.div`
     cursor: pointer;
     user-select: none;
     transition: all 0.1s linear;
-
     :hover {
         opacity: 0.8;
     }

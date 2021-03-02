@@ -1,7 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import styled from 'styled-components';
 import Slider from 'react-slick';
-import {Backdrop, Fade} from '@material-ui/core';
 
 import PofolModal from 'components/Modal/PofolModal';
 import CommonLayout from 'components/Layout/CommonLayout';

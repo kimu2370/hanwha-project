@@ -5,18 +5,17 @@ import {AiFillTags} from 'react-icons/ai';
 import Button from 'components/Parts/Button';
 
 const Tag = ({children}) => {
-    return <Wrapper>{children}</Wrapper>;
+    return <Wrapper># {children}</Wrapper>;
 };
 
 // tag의 데이터 만큼 mapping
-const Tags = ({...p}) => {
+const Tags = ({list, ...p}) => {
     return (
-        <Container>
+        <Container {...p}>
             <Icon />
-            {/* mockup data */}
-            <Tag>#장고</Tag>
-            <Tag>#https</Tag>
-            <Tag>#init-letsencrypt</Tag>
+            {list.map((tag, idx) => (
+                <Tag key={idx} children={tag} />
+            ))}
         </Container>
     );
 };
@@ -30,8 +29,9 @@ const Container = styled.div`
 
 const Wrapper = styled(Button)`
     margin-right: 0.5rem;
-    font-weight: 500;
-    background-color: #61dafb;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    background-color: #f8f9fa;
 `;
 
 const Icon = styled(AiFillTags)`

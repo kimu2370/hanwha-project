@@ -1,53 +1,46 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
-import ReactMarkdownWithHtml from 'react-markdown/with-html';
 import marked from 'marked';
 
+import Makrdown from 'components/Markdown';
 import Tags from 'components/Blog/Tags';
-import Button from 'components/Parts/Button';
+import ButtonBase from 'components/Parts/Button';
 
-const Post = ({...p}) => {
+const API_HOST = process.env.REACT_APP_URL;
+
+const Post = ({post, ...p}) => {
     const history = useHistory();
     const [markdown, setMarkdown] = useState('');
 
-    const replaceOverText = useCallback(text => {
-        // fetched data의 blog text에 생략기호 대체.
-        if (typeof text !== 'string') return;
-
-        const LIMIT_TEXT_LEN = 300;
-        const ELLIPSIS = '...';
-        let result = '';
-
-        if (LIMIT_TEXT_LEN <= text.length) {
-            result = text.slice(0, LIMIT_TEXT_LEN) + ELLIPSIS;
-        }
-        return result;
-    }, []);
-
     const moveToPage = useCallback(() => {
-        history.push('board/1');
-    }, [history]);
+        history.push({
+            pathname: `/detail/${post.id}`,
+            state: post,
+        });
+    }, [history, post]);
 
     useEffect(() => {
-        fetch('http://localhost:3000/markdown/post-1.md')
-            .then(res => {
-                return res.text();
-            })
-            .then(text => {
-                const markedText = marked(text);
-                setMarkdown(markedText);
-            });
-    }, []);
+        const getMarkedPost = () => {
+            fetch(`${API_HOST}/markdown/${post.filename}.md`)
+                .then(res => {
+                    return res.text();
+                })
+                .then(text => {
+                    const markedText = marked(text);
+                    setMarkdown(markedText);
+                });
+        };
+        getMarkedPost();
+    }, [post.filename]);
 
     return (
         <Box {...p}>
-            <Img
-                src="https://doitdjango.com/media/blog/images/2021/02/06/nicole-baster-6_y5Sww0-h4-unsplash.jpg"
-                alt="image"
-            />
-            <StyleMD children={markdown} allowDangerousHtml />
-            <Tags />
+            <Img src={post.thumbnail} alt="image" />
+            <Title>{post.title}</Title>
+            <SubTitle>{post.subTitle}</SubTitle>
+            <StyleMD children={markdown} />
+            <Tags list={post.tags} />
             <ReadMore onClick={moveToPage}>Read More</ReadMore>
         </Box>
     );
@@ -55,7 +48,18 @@ const Post = ({...p}) => {
 
 export default Post;
 
-const StyleMD = styled(ReactMarkdownWithHtml)`
+const Title = styled.h1`
+    font-size: 2rem !important;
+    margin: 0 0 1rem 0 !important;
+`;
+
+const SubTitle = styled.h5`
+    font-size: 1.5rem !important;
+    margin: 0 !important;
+    opacity: 0.5;
+`;
+
+const StyleMD = styled(Makrdown)`
     display: -webkit-box;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -88,15 +92,11 @@ const Img = styled.img.attrs(() => ({
     alt: 'image',
 }))``;
 
-const ReadMore = styled(Button)`
-    display: flex;
-    justify-content: flex-start;
-
-    width: 97px;
+const ReadMore = styled(ButtonBase)`
+    width: 130px;
     margin: 0 1.25rem 1.5rem 1.2rem;
+    padding: 10px 1.25rem 9px !important;
     font-size: 1rem;
-    line-height: 2.5;
-
     color: #fff;
     background-color: #007bff;
     border-color: #007bff;

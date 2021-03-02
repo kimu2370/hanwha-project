@@ -1,24 +1,37 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import {useHistory} from 'react-router-dom';
+import styled from 'styled-components';
 
-const Mini = ({...p}) => {
+const Mini = ({post, ...p}) => {
+    const history = useHistory();
+
+    const moveToPage = () => {
+        history.push({
+            pathname: `/detail/${post.id}`,
+            state: post,
+        });
+    };
+
     return (
-        <Box>
-            {/* <div>{p.content}</div> */}
-            {/* <Creator>{p.addedAt}</Creator> */}
-            <Text>테스트 포스트 입니다.</Text>
-            <Creator>2021년 02월 26일 5시08분</Creator>
+        <Box onClick={moveToPage}>
+            <Title>{post.title}</Title>
+            <CreateWrapper>
+                <Create>
+                    <span>{'seunghyun'}</span>
+                    <span>{post.addedAt}</span>
+                </Create>
+            </CreateWrapper>
         </Box>
     );
 };
 
-export default Mini;
+export default React.memo(Mini);
 
 const Box = styled.div`
     display: flex;
     flex-direction: column;
     padding: 20px;
-    border-radius: 3px;
+    border-radius: 0.25rem;
 
     background-color: rgba(255, 255, 255, 0.6);
 
@@ -30,15 +43,26 @@ const Box = styled.div`
     }
 `;
 
-const Text = styled.div`
+const Title = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-start;
     color: #343a40;
 `;
 
-const Creator = styled.div`
+const CreateWrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    margin-top: 1rem;
+`;
+
+const Create = styled.div`
+    color: #1e1e1e;
+    background-color: #f8f9fa;
+    border-radius: 3rem;
+    padding: 2px 0 2px 10px;
+    > span {
+        padding-right: 10px;
+    }
 `;
