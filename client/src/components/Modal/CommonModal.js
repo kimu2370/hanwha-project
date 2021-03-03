@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import {Backdrop, Fade} from '@material-ui/core';
 
 import Modal from 'components/Parts/Modal';
 import Button from 'components/Parts/Button';
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const CommonModal = ({
     children,
@@ -17,14 +20,41 @@ const CommonModal = ({
     btnAlign,
     hBgColor,
     fBgColor,
+    ...p
 }) => {
+    const {formData, setAuthenticated, setError} = p;
     const handleCloseModal = () => {
         setOpen(false);
     };
 
     const handleClick = () => {
         if (btnType === 'login') {
-            // submit
+            const getAccessToken = async () => {
+                const response = await axios.get(`${SERVER_URL}/token`);
+                return response.data;
+            };
+
+            const doLogin = async ({accessToken}) => {
+                const response = await axios.post(`${SERVER_URL}/auth/login`, {
+                    email: formData.email,
+                    password: formData.password,
+                    headers: {
+                        authorization: accessToken,
+                    },
+                });
+                return response.data;
+            };
+            getAccessToken().then(res => {
+                doLogin(res)
+                    .then(() => {
+                        setOpen(false);
+                        setAuthenticated(true);
+                    })
+                    .catch(err => {
+                        console.dir(err.response.data.message);
+                        setError(err.response.data.message);
+                    });
+            });
         }
 
         if (btnType === 'close') {

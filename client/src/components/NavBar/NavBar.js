@@ -9,6 +9,10 @@ import useVisible from 'hooks/useVisible';
 const NavBar = ({...p}) => {
     const [currentTab, setCurrentTab] = useState(0);
     const [openModal, setOpenModal] = useState(false);
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    });
     const [authenticated, setAuthenticated] = useState(false);
     const {ref: dropdownRef, isVisible, setIsVisible} = useVisible(false);
     const history = useHistory();
@@ -49,6 +53,13 @@ const NavBar = ({...p}) => {
     );
 
     const handleOpenModal = () => {
+        if (authenticated) {
+            if (window.confirm('로그아웃 하시겠습니까?')) {
+                window.location.reload();
+                setOpenModal(false);
+            }
+            return;
+        }
         setOpenModal(true);
     };
 
@@ -80,7 +91,13 @@ const NavBar = ({...p}) => {
                 />
             ))}
             <LoginTab onClick={handleOpenModal}>{authenticated ? 'Log out' : 'Log in'}</LoginTab>
-            <LoginModal open={openModal} setOpen={setOpenModal} />
+            <LoginModal
+                open={openModal}
+                setOpen={setOpenModal}
+                formData={formData}
+                setFormData={setFormData}
+                setAuthenticated={setAuthenticated}
+            />
         </Tabs>
     );
 };

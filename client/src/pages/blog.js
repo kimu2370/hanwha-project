@@ -18,7 +18,7 @@ const Blog = React.forwardRef((props, ref) => {
     const [posts, setPosts] = useState([]);
     const [categories, setCategories] = useState([]);
     const query = useMemo(() => qs.parse(location.search.slice(1)), [location]);
-    console.log(query);
+    // console.log(query);
 
     const handleClickUp = useCallback(() => {
         if (ref && ref.current) {
