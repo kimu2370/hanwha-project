@@ -1,20 +1,36 @@
-import React from 'react';
+import React, {useCallback} from 'react';
+import {useHistory, useLocation} from 'react-router-dom';
+import qs from 'querystring';
+// import axios from 'axios';
 import styled from 'styled-components';
 import {AiFillTags} from 'react-icons/ai';
 
 import Button from 'components/Parts/Button';
 
-const Tag = ({children}) => {
-    return <Wrapper># {children}</Wrapper>;
+const Tag = ({children, onClickSearch, ...p}) => {
+    return <Wrapper onClick={() => onClickSearch(children)}># {children}</Wrapper>;
 };
 
 // tag의 데이터 만큼 mapping
 const Tags = ({list, ...p}) => {
+    const history = useHistory();
+    const location = useLocation();
+
+    const handleClickSearch = useCallback(
+        text => {
+            history.push({
+                pathname: location.pathname,
+                search: qs.stringify({q: text}),
+            });
+        },
+        [history, location.pathname]
+    );
+
     return (
         <Container {...p}>
             <Icon />
             {list.map((tag, idx) => (
-                <Tag key={idx} children={tag} />
+                <Tag key={idx} children={tag} onClickSearch={handleClickSearch} />
             ))}
         </Container>
     );
