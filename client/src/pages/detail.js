@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {useLocation} from 'react-router-dom';
 import styled from 'styled-components';
 import marked from 'marked';
@@ -12,7 +12,7 @@ const API_HOST = process.env.REACT_APP_URL;
 const Detail = React.forwardRef((props, ref) => {
     const [markdown, setMarkdown] = useState('');
     const location = useLocation();
-    const post = location.state;
+    const post = useMemo(() => location.state, [location.state]);
 
     useEffect(() => {
         if (ref && ref.current) {

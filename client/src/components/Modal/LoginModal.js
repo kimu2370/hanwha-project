@@ -16,6 +16,9 @@ const LoginModal = ({formData, setFormData, ...p}) => {
         },
         [formData, setFormData]
     );
+
+    const searchForgotPW = useCallback(() => {}, []);
+
     return (
         <CommonModal
             {...p}
@@ -48,7 +51,7 @@ const LoginModal = ({formData, setFormData, ...p}) => {
                     autoComplete="off"
                     type="password"
                 />
-                <Link>Forgot password?</Link>
+                <Link onClick={searchForgotPW}>Forgot password?</Link>
                 <Link>Sign up</Link>
             </Content>
         </CommonModal>

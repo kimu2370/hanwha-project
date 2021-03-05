@@ -18,7 +18,6 @@ const Blog = React.forwardRef((props, ref) => {
     const [posts, setPosts] = useState([]);
     const [categories, setCategories] = useState([]);
     const query = useMemo(() => qs.parse(location.search.slice(1)), [location]);
-    // console.log(query);
 
     const handleClickUp = useCallback(() => {
         if (ref && ref.current) {
@@ -34,27 +33,12 @@ const Blog = React.forwardRef((props, ref) => {
                 pathname: location.pathname,
                 search: qs.stringify({q: text}),
             });
+            if (ref && ref.current) {
+                ref.current.scrollIntoView(true);
+            }
         },
-        [history, location.pathname]
+        [history, location.pathname, ref]
     );
-
-    useEffect(() => {
-        const getPosts = async () => {
-            const response = await axios.get(`${SERVER_URL}/posts`);
-            return response.data;
-        };
-        const getCategories = async () => {
-            const response = await axios.get(`${SERVER_URL}/categories`);
-            return response.data;
-        };
-
-        getPosts().then(res => {
-            setPosts(res);
-        });
-        getCategories().then(res => {
-            setCategories(res);
-        });
-    }, []);
 
     useEffect(() => {
         if (query.q) {
@@ -67,6 +51,22 @@ const Blog = React.forwardRef((props, ref) => {
                     console.log(error);
                 });
         }
+        const getPosts = async () => {
+            const response = await axios.get(`${SERVER_URL}/posts`);
+            return response.data;
+        };
+        const getCategories = async () => {
+            const response = await axios.get(`${SERVER_URL}/categories`);
+            return response.data;
+        };
+
+        getPosts().then(res => {
+            setPosts(res);
+        });
+
+        getCategories().then(res => {
+            setCategories(res);
+        });
     }, [query]);
 
     return (
@@ -75,9 +75,9 @@ const Blog = React.forwardRef((props, ref) => {
                 <Container>
                     <Title>Blog {query.q && <Tag>{query.q}</Tag>}</Title>
                     <Posts>
-                        {posts.map(post => (
-                            <StyledPost key={post.id} post={post} />
-                        ))}
+                        {posts.map(post => {
+                            return <StyledPost key={post.id} post={post} />;
+                        })}
                     </Posts>
                 </Container>
                 <StickyBox>

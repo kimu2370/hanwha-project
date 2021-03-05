@@ -14,16 +14,15 @@ const Tag = ({children, onClickSearch, ...p}) => {
 // tag의 데이터 만큼 mapping
 const Tags = ({list, ...p}) => {
     const history = useHistory();
-    const location = useLocation();
 
     const handleClickSearch = useCallback(
         text => {
             history.push({
-                pathname: location.pathname,
+                pathname: '/blog',
                 search: qs.stringify({q: text}),
             });
         },
-        [history, location.pathname]
+        [history]
     );
 
     return (

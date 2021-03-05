@@ -12,7 +12,6 @@ const API_HOST = process.env.REACT_APP_URL;
 const Post = ({post, ...p}) => {
     const history = useHistory();
     const [markdown, setMarkdown] = useState('');
-
     const moveToPage = useCallback(() => {
         history.push({
             pathname: `/detail/${post.id}`,
@@ -23,16 +22,14 @@ const Post = ({post, ...p}) => {
     useEffect(() => {
         const getMarkedPost = () => {
             fetch(`${API_HOST}/markdown/${post.filename}.md`)
-                .then(res => {
-                    return res.text();
-                })
+                .then(res => res.text())
                 .then(text => {
-                    const markedText = marked(text);
-                    setMarkdown(markedText);
+                    setMarkdown(marked(text));
                 });
         };
         getMarkedPost();
-    }, [post.filename]);
+        return getMarkedPost();
+    }, [post.filename, history]);
 
     return (
         <Box {...p}>
