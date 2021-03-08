@@ -1,11 +1,15 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useContext, useEffect} from 'react';
+import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import {TextField} from '@material-ui/core';
 
 import CommonModal from './CommonModal';
+import HideContext from 'Context/HideContext';
 
 const LoginModal = ({formData, setFormData, ...p}) => {
+    const history = useHistory();
     const [error, setError] = useState(false);
+    const {handleHide} = useContext(HideContext);
 
     const handleChange = useCallback(
         (e, name) => {
@@ -16,8 +20,21 @@ const LoginModal = ({formData, setFormData, ...p}) => {
         },
         [formData, setFormData]
     );
+    useEffect(() => {
+        setError(false);
+    }, [p.open]);
 
     const searchForgotPW = useCallback(() => {}, []);
+
+    const moveToSignupPage = useCallback(() => {
+        p.setOpen(false);
+
+        handleHide();
+
+        history.push({
+            pathname: '/signup',
+        });
+    }, [history, handleHide, p]);
 
     return (
         <CommonModal
@@ -36,7 +53,6 @@ const LoginModal = ({formData, setFormData, ...p}) => {
                 <TextField
                     error={!!error}
                     helperText={error}
-                    id="outlined-basic"
                     label="이메일"
                     variant="outlined"
                     onChange={e => handleChange(e, 'email')}
@@ -44,15 +60,18 @@ const LoginModal = ({formData, setFormData, ...p}) => {
                 <TextField
                     error={!!error}
                     helperText={error}
-                    id="outlined-error-helper-text"
                     label="패스워드"
                     variant="outlined"
                     onChange={e => handleChange(e, 'password')}
                     autoComplete="off"
                     type="password"
                 />
-                <Link onClick={searchForgotPW}>Forgot password?</Link>
-                <Link>Sign up</Link>
+                <Link width={'130px'} left={'180px'} onClick={searchForgotPW}>
+                    Forgot password?
+                </Link>
+                <Link width={'60px'} left={'250px'} onClick={moveToSignupPage}>
+                    Sign up
+                </Link>
             </Content>
         </CommonModal>
     );
@@ -71,8 +90,11 @@ const Content = styled.div`
 `;
 
 const Link = styled.a`
-    cursor: pointer;
+    position: relative;
+    left: ${p => p.left};
+    width: ${p => p.width};
     text-align: right;
+    cursor: pointer;
     color: ${p => p.theme.subColor};
     text-decoration: underline ${p => p.theme.subColor};
     margin-top: 10px;

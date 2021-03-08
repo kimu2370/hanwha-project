@@ -1,9 +1,10 @@
-import React, {useState, useCallback, useEffect, useMemo} from 'react';
+import React, {useState, useCallback, useEffect, useMemo, useContext} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import qs from 'querystring';
 import axios from 'axios';
 import styled from 'styled-components';
 
+import HideContext from 'Context/HideContext';
 import {FaArrowAltCircleUp} from 'react-icons/fa';
 import Post from 'components/Blog/Post';
 import CommonLayout from 'components/Layout/CommonLayout';
@@ -14,6 +15,7 @@ const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 const Blog = React.forwardRef((props, ref) => {
     const history = useHistory();
     const location = useLocation();
+    const {isHide, handleHide} = useContext(HideContext);
 
     const [posts, setPosts] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -39,6 +41,10 @@ const Blog = React.forwardRef((props, ref) => {
         },
         [history, location.pathname, ref]
     );
+
+    useEffect(() => {
+        isHide && handleHide(false);
+    }, [isHide, handleHide]);
 
     useEffect(() => {
         if (query.q) {
