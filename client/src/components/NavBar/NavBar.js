@@ -1,18 +1,16 @@
-import React, {useState, useCallback, useMemo, useRef, useEffect} from 'react';
+import React, {useState, useCallback, useMemo} from 'react';
 import {useHistory, useLocation} from 'react-router-dom';
 import styled, {keyframes} from 'styled-components';
 
 import LoginModal from 'components/Modal/LoginModal';
+import SignupModal from 'components/Modal/SignupModal';
 
 import useVisible from 'hooks/useVisible';
 
 const NavBar = ({...p}) => {
     const [currentTab, setCurrentTab] = useState(0);
-    const [openModal, setOpenModal] = useState(false);
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    });
+    const [openLogin, setOpenLogin] = useState(false);
+    const [openSignup, setOpenSignup] = useState(false);
     const [authenticated, setAuthenticated] = useState(false);
     const {ref: dropdownRef, isVisible, setIsVisible} = useVisible(false);
     const history = useHistory();
@@ -52,52 +50,64 @@ const NavBar = ({...p}) => {
         [history, setIsVisible]
     );
 
-    const handleOpenModal = () => {
+    const openLoginModal = () => {
         if (authenticated) {
             if (window.confirm('로그아웃 하시겠습니까?')) {
                 window.location.reload();
-                setOpenModal(false);
+                setOpenLogin(false);
             }
             return;
         }
-        setOpenModal(true);
+        setOpenLogin(true);
+    };
+
+    const openSignupModal = () => {
+        setOpenSignup(true);
     };
 
     return (
         <Tabs {...p}>
-            <Typography onClick={() => moveToClickedPage('logo')}>Hanwha Project</Typography>
-            {tabs.map(tab => (
-                <Tab
-                    key={tab.id}
-                    clicked={currentTab === tab.id}
-                    children={
-                        tab.dropdownList ? (
-                            <>
-                                {tab.label}
-                                {isVisible && (
-                                    <Dropdown ref={dropdownRef}>
-                                        {tab.dropdownList.map(x => (
-                                            <div key={x.id}>{x.label}</div>
-                                        ))}
-                                    </Dropdown>
-                                )}
-                            </>
-                        ) : (
-                            tab.label
-                        )
-                    }
-                    dropdown={tab.dropdownList}
-                    onClick={() => moveToClickedPage(tab)}
+            <LeftBox>
+                <Typography onClick={() => moveToClickedPage('logo')}>Hanwha Project</Typography>
+                {tabs.map(tab => (
+                    <Tab
+                        key={tab.id}
+                        clicked={currentTab === tab.id}
+                        children={
+                            tab.dropdownList ? (
+                                <>
+                                    {tab.label}
+                                    {isVisible && (
+                                        <Dropdown ref={dropdownRef}>
+                                            {tab.dropdownList.map(x => (
+                                                <div key={x.id}>{x.label}</div>
+                                            ))}
+                                        </Dropdown>
+                                    )}
+                                </>
+                            ) : (
+                                tab.label
+                            )
+                        }
+                        dropdown={tab.dropdownList}
+                        onClick={() => moveToClickedPage(tab)}
+                    />
+                ))}
+            </LeftBox>
+            <RightBox>
+                <LoginTab onClick={openLoginModal}>{authenticated ? 'Log out' : 'Log in'}</LoginTab>
+                <LoginModal
+                    open={openLogin}
+                    setOpen={setOpenLogin}
+                    setAuthenticated={setAuthenticated}
                 />
-            ))}
-            <LoginTab onClick={handleOpenModal}>{authenticated ? 'Log out' : 'Log in'}</LoginTab>
-            <LoginModal
-                open={openModal}
-                setOpen={setOpenModal}
-                formData={formData}
-                setFormData={setFormData}
-                setAuthenticated={setAuthenticated}
-            />
+                {!authenticated && <SignupTab onClick={openSignupModal}>Sign Up</SignupTab>}
+                <SignupModal
+                    open={openSignup}
+                    setOpen={setOpenSignup}
+                    setAuthenticated={setAuthenticated}
+                />
+            </RightBox>
         </Tabs>
     );
 };
@@ -106,9 +116,15 @@ export default NavBar;
 
 const Tabs = styled.div`
     display: flex;
+    justify-content: space-between;
     position: sticky;
     min-width: 640px;
 `;
+
+const LeftBox = styled.div`
+    display: flex;
+`;
+const RightBox = styled(LeftBox)``;
 
 const Tab = styled.div`
     cursor: pointer;
@@ -147,10 +163,8 @@ const Tab = styled.div`
     `};
 `;
 
-const LoginTab = styled(Tab)`
-    position: absolute;
-    right: 0;
-`;
+const LoginTab = styled(Tab)``;
+const SignupTab = styled(LoginTab)``;
 
 const flutter = keyframes`
     0% {

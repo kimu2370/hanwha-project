@@ -9,7 +9,6 @@ const PofolModal = ({...p}) => {
             {...p}
             size={'800px'}
             btnText={'Close'}
-            btnType={'close'}
             titleAlign={'left'}
             hBgColor={'#ffffff'}
             fBgColor={'#ffffff'}

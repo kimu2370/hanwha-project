@@ -1,9 +1,8 @@
-import React, {useState, useEffect, useMemo, useContext} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {useLocation} from 'react-router-dom';
 import styled from 'styled-components';
 import marked from 'marked';
 
-import HideContext from 'Context/HideContext';
 import Markdown from 'components/Markdown';
 import CommonLayout from 'components/Layout/CommonLayout';
 import Tags from 'components/Blog/Tags';
@@ -14,11 +13,6 @@ const Detail = React.forwardRef((props, ref) => {
     const [markdown, setMarkdown] = useState('');
     const location = useLocation();
     const post = useMemo(() => location.state, [location.state]);
-    const {isHide, handleHide} = useContext(HideContext);
-
-    useEffect(() => {
-        isHide && handleHide(false);
-    }, [isHide, handleHide]);
 
     useEffect(() => {
         if (ref && ref.current) {

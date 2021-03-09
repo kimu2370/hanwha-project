@@ -18,7 +18,7 @@ const Button = styled.div`
     }
 
     ${p =>
-        p.btnType === 'login' &&
+        p.btnType === 'submit' &&
         `
         width: 250px;
         padding: 16px;

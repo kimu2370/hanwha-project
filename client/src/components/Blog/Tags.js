@@ -8,7 +8,8 @@ import {AiFillTags} from 'react-icons/ai';
 import Button from 'components/Parts/Button';
 
 const Tag = ({children, onClickSearch, ...p}) => {
-    return <Wrapper onClick={() => onClickSearch(children)}># {children}</Wrapper>;
+    // return <Wrapper onClick={() => onClickSearch(children)}># {children}</Wrapper>;
+    return <Wrapper># {children}</Wrapper>;
 };
 
 // tag의 데이터 만큼 mapping
@@ -29,7 +30,8 @@ const Tags = ({list, ...p}) => {
         <Container {...p}>
             <Icon />
             {list.map((tag, idx) => (
-                <Tag key={idx} children={tag} onClickSearch={handleClickSearch} />
+                // <Tag key={idx} children={tag} onClickSearch={handleClickSearch} />
+                <Tag key={idx} children={tag} />
             ))}
         </Container>
     );

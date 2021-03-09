@@ -8,12 +8,14 @@ import CommonModal from './CommonModal';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-const LoginModal = ({...p}) => {
+const SignupModal = ({...p}) => {
     const [error, setError] = useState(false);
 
     const [data, setData] = useState({
         email: '',
-        pw: '',
+        name: '',
+        password: '',
+        password2: '',
     });
 
     const handleChange = useCallback(
@@ -23,40 +25,26 @@ const LoginModal = ({...p}) => {
                 [target]: e.target.value,
             });
         },
-        [data]
+        [data, setData]
     );
     useEffect(() => {
         setError(false);
     }, [p.open]);
 
-    const searchForgotPW = useCallback(() => {}, []);
+    const handleSignup = () => {
+        if (data.email.length < 1 && data.password.length < 1) return;
+        if (data.password !== data.password2) return window.alert('비밀번호가 일치하지 않습니다.');
 
-    const handleLogin = () => {
-        const getAccessToken = async () => {
-            const response = await axios.get(`${SERVER_URL}/token`);
-            return response.data;
-        };
-
-        const doLogin = async ({accessToken}) => {
-            const response = await axios.post(`${SERVER_URL}/auth/login`, {
+        const register = async () => {
+            const response = await axios.post(`${SERVER_URL}/auth/register`, {
                 email: data.email,
+                name: data.name,
                 password: data.password,
-                headers: {
-                    authorization: accessToken,
-                },
             });
             return response.data;
         };
-        getAccessToken().then(res => {
-            doLogin(res)
-                .then(() => {
-                    p.setOpen(false);
-                    p.setAuthenticated(true);
-                })
-                .catch(err => {
-                    console.log(err.response.data.message);
-                    setError(err.response.data.message);
-                });
+        register().then(res => {
+            p.setOpen(false);
         });
     };
 
@@ -64,7 +52,7 @@ const LoginModal = ({...p}) => {
         <CommonModal
             {...p}
             size={'350px'}
-            title={'Log in'}
+            title={'Sign Up'}
             btnText={'submit'}
             btnType={'submit'}
             titleAlign={'center'}
@@ -72,34 +60,47 @@ const LoginModal = ({...p}) => {
             formData={data}
             setAuthenticated={p.setAuthenticated}
             setError={setError}
-            handler={handleLogin}
+            handler={handleSignup}
         >
             <Content>
                 <TextField
                     error={!!error}
                     helperText={error}
-                    label="Email"
+                    label="Email*"
                     variant="outlined"
                     onChange={e => handleChange(e, 'email')}
                 />
                 <TextField
                     error={!!error}
                     helperText={error}
-                    label="Password"
+                    label="User name*"
                     variant="outlined"
-                    onChange={e => handleChange(e, 'pw')}
+                    onChange={e => handleChange(e, 'name')}
+                />
+                <TextField
+                    error={!!error}
+                    helperText={error}
+                    label="Password*"
+                    variant="outlined"
+                    onChange={e => handleChange(e, 'password')}
                     autoComplete="off"
                     type="password"
                 />
-                <Link width={'130px'} left={'180px'} onClick={searchForgotPW}>
-                    Forgot password?
-                </Link>
+                <TextField
+                    error={!!error}
+                    helperText={error}
+                    label="Password again*"
+                    variant="outlined"
+                    onChange={e => handleChange(e, 'password2')}
+                    autoComplete="off"
+                    type="password"
+                />
             </Content>
         </CommonModal>
     );
 };
 
-export default LoginModal;
+export default SignupModal;
 
 const Content = styled.div`
     display: flex;
@@ -108,19 +109,5 @@ const Content = styled.div`
     padding: 20px 20px 80px 20px;
     > div {
         margin: 15px 0;
-    }
-`;
-
-const Link = styled.a`
-    position: relative;
-    left: ${p => p.left};
-    width: ${p => p.width};
-    text-align: right;
-    cursor: pointer;
-    color: ${p => p.theme.subColor};
-    text-decoration: underline ${p => p.theme.subColor};
-    margin-top: 10px;
-    :hover {
-        opacity: 0.8;
     }
 `;

@@ -1,8 +1,7 @@
-import React, {useCallback, useState, useContext, useEffect} from 'react';
+import React, {useCallback, useState} from 'react';
 import styled from 'styled-components';
 import Slider from 'react-slick';
 
-import HideContext from 'Context/HideContext';
 import PofolModal from 'components/Modal/PofolModal';
 import CommonLayout from 'components/Layout/CommonLayout';
 import 'slick-carousel/slick/slick.css';
@@ -53,15 +52,10 @@ const list = [
 const About = () => {
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState('');
-    const {isHide, handleHide} = useContext(HideContext);
     const handleOpenModal = useCallback(text => {
         setOpen(true);
         setTitle(text);
     }, []);
-
-    useEffect(() => {
-        isHide && handleHide(false);
-    }, [isHide, handleHide]);
 
     return (
         <>

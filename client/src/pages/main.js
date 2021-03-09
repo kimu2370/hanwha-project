@@ -1,8 +1,7 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 
-import HideContext from 'Context/HideContext';
 import Mini from 'components/Blog/Mini';
 import MainLayout from 'components/Layout/MainLayout';
 
@@ -10,7 +9,6 @@ const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const Main = () => {
     const [data, setData] = useState([]);
-    const {isHide, handleHide} = useContext(HideContext);
 
     useEffect(() => {
         const getPosts = async () => {
@@ -22,10 +20,6 @@ const Main = () => {
             setData(res);
         });
     }, []);
-
-    useEffect(() => {
-        isHide && handleHide(false);
-    }, [isHide, handleHide]);
 
     return (
         <MainLayout>

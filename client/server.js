@@ -38,9 +38,9 @@ function isAuthenticated({email, password}) {
 server.post('/auth/register', (req, res) => {
     console.log('register endpoint called; request body:');
     console.log(req.body);
-    const {email, password} = req.body;
+    const {email, password, name} = req.body;
 
-    if (isAuthenticated({email, password}) === true) {
+    if (isAuthenticated({email, password})) {
         const status = 401;
         const message = 'Email and Password already exist';
         res.status(status).json({status, message});
@@ -64,25 +64,22 @@ server.post('/auth/register', (req, res) => {
         //Add new user
         parsedData.users.push({
             id: last_item_id + 1,
-            email: email,
-            password: password,
+            email,
+            password,
+            name,
         }); //add some data
 
-        // let writeData = fs.writeFile('./users.json', JSON.stringify(parsedData), (err, result) => {
-        //     // WRITE
-        //     if (err) {
-        //         const status = 401;
-        //         const message = err;
-        //         res.status(status).json({status, message});
-        //         return;
-        //     }
-        // });
+        let writeData = fs.writeFile('./users.json', JSON.stringify(parsedData), (err, result) => {
+            // WRITE
+            if (err) {
+                const status = 401;
+                const message = err;
+                res.status(status).json({status, message});
+                return;
+            }
+        });
+        res.status(200).json({payload: true});
     });
-
-    // Create token for new user
-    const access_token = createToken({email, password});
-    console.log('Access Token:' + access_token);
-    res.status(200).json({access_token});
 });
 
 // Login to one of the users from ./users.json

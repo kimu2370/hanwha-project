@@ -1,12 +1,9 @@
 import React, {useState} from 'react';
-import axios from 'axios';
 import styled from 'styled-components';
 import {Backdrop, Fade} from '@material-ui/core';
 
 import Modal from 'components/Parts/Modal';
 import Button from 'components/Parts/Button';
-
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const CommonModal = ({
     children,
@@ -14,52 +11,16 @@ const CommonModal = ({
     title,
     open,
     setOpen,
-    btnType,
     size,
     titleAlign,
     btnAlign,
     hBgColor,
     fBgColor,
-    ...p
+    handler,
+    btnType,
 }) => {
-    const {formData, setAuthenticated, setError} = p;
     const handleCloseModal = () => {
         setOpen(false);
-    };
-
-    const handleClick = () => {
-        if (btnType === 'login') {
-            const getAccessToken = async () => {
-                const response = await axios.get(`${SERVER_URL}/token`);
-                return response.data;
-            };
-
-            const doLogin = async ({accessToken}) => {
-                const response = await axios.post(`${SERVER_URL}/auth/login`, {
-                    email: formData.email,
-                    password: formData.password,
-                    headers: {
-                        authorization: accessToken,
-                    },
-                });
-                return response.data;
-            };
-            getAccessToken().then(res => {
-                doLogin(res)
-                    .then(() => {
-                        setOpen(false);
-                        setAuthenticated(true);
-                    })
-                    .catch(err => {
-                        console.dir(err.response.data.message);
-                        setError(err.response.data.message);
-                    });
-            });
-        }
-
-        if (btnType === 'close') {
-            setOpen(false);
-        }
     };
 
     return (
@@ -76,13 +37,11 @@ const CommonModal = ({
                 <Container size={size}>
                     <Header hBgColor={hBgColor} titleAlign={titleAlign}>
                         <div>{title}</div>
-                        <Close btnType={btnType} onClick={handleCloseModal}>
-                            x
-                        </Close>
+                        <Close onClick={handleCloseModal}>x</Close>
                     </Header>
                     {children}
                     <Footer fBgColor={fBgColor} btnAlign={btnAlign}>
-                        <Button btnType={btnType} onClick={handleClick}>
+                        <Button btnType={btnType} onClick={handler}>
                             {btnText}
                         </Button>
                     </Footer>
@@ -165,12 +124,8 @@ const Close = styled.button`
 
     padding: 0 15px 2px 15px;
 
-    ${p =>
-        p.btnType === 'login' &&
-        `
-        color: #ffffff;
-        background-color: #dc3545;
-    `};
+    color: #ffffff;
+    background-color: #dc3545;
 
     ${p =>
         p.btnType === 'close' &&
