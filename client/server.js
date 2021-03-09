@@ -69,7 +69,7 @@ server.post('/auth/register', (req, res) => {
             name,
         }); //add some data
 
-        let writeData = fs.writeFile('./users.json', JSON.stringify(parsedData), (err, result) => {
+        fs.writeFile('./users.json', JSON.stringify(parsedData), (err, result) => {
             // WRITE
             if (err) {
                 const status = 401;

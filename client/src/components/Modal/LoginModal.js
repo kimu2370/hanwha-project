@@ -13,7 +13,7 @@ const LoginModal = ({...p}) => {
 
     const [data, setData] = useState({
         email: '',
-        pw: '',
+        password: '',
     });
 
     const handleChange = useCallback(
@@ -87,7 +87,7 @@ const LoginModal = ({...p}) => {
                     helperText={error}
                     label="Password"
                     variant="outlined"
-                    onChange={e => handleChange(e, 'pw')}
+                    onChange={e => handleChange(e, 'password')}
                     autoComplete="off"
                     type="password"
                 />

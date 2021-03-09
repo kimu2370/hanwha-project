@@ -1,7 +1,7 @@
 import React, {useState, useRef, useEffect, useContext} from 'react';
 import styled from 'styled-components';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import HideContext from 'Context/HideContext';
+import HideContext from 'Context/hide/HideContext';
 
 import Main from 'pages/main';
 import About from 'pages/about';
