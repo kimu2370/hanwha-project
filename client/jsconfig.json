@@ -4,5 +4,5 @@
     },
     "include": [
         "src"
-, "server.js"    ]
+, "server.js", "python.js"    ]
 }

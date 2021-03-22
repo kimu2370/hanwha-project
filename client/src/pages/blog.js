@@ -8,15 +8,16 @@ import {FaArrowAltCircleUp} from 'react-icons/fa';
 import Post from 'components/Blog/Post';
 import CommonLayout from 'components/Layout/CommonLayout';
 import ButtonBase from 'components/Parts/Button';
+import StickyBox from 'components/Parts/StickyBox';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const Blog = React.forwardRef((props, ref) => {
     const history = useHistory();
     const location = useLocation();
+    const [categories, setCategories] = useState([]);
 
     const [posts, setPosts] = useState([]);
-    const [categories, setCategories] = useState([]);
     const query = useMemo(() => qs.parse(location.search.slice(1)), [location]);
 
     const handleClickUp = useCallback(() => {
@@ -80,27 +81,7 @@ const Blog = React.forwardRef((props, ref) => {
                         })}
                     </Posts>
                 </Container>
-                <StickyBox>
-                    <CardBox>
-                        <CardHeader>Search</CardHeader>
-                        <CardBody>
-                            <SearchInput />
-                            <StyledButton>GO!</StyledButton>
-                        </CardBody>
-                    </CardBox>
-                    <CardBox>
-                        <CardHeader>Categories</CardHeader>
-                        <Categories>
-                            {categories.map((category, idx) => (
-                                <li key={idx}>
-                                    <button
-                                        onClick={() => handleClickSearch(category.name)}
-                                    >{`${category.name} (${category.cnt})`}</button>
-                                </li>
-                            ))}
-                        </Categories>
-                    </CardBox>
-                </StickyBox>
+                <StickyBox categories={categories} onClickSearch={handleClickSearch} />
             </Wrapper>
             <ArrowUp onClick={handleClickUp} />
         </CommonLayout>
@@ -122,66 +103,6 @@ const Container = styled.div`
     flex-direction: column;
     flex: 1;
     padding-right: 1.5rem;
-`;
-
-const StickyBox = styled.div`
-    margin-top: 3.5rem;
-`;
-
-const CardBox = styled.div`
-    display: flex;
-    flex-direction: column;
-    border: 1px solid rgba(0, 0, 0, 0.125);
-    border-radius: 0.25rem;
-    margin-bottom: 2rem;
-`;
-
-const CardHeader = styled.div`
-    padding: 12px 20px;
-    font-size: 1.25rem;
-    font-weight: 500;
-    line-height: 1.2;
-    background-color: rgba(0, 0, 0, 0.03);
-`;
-
-const CardBody = styled.div`
-    display: flex;
-    padding: 1.25rem;
-`;
-
-const Categories = styled(CardBody)`
-    flex-direction: column;
-    > li {
-        margin-bottom: 1rem;
-    }
-    > li > button {
-        font-size: 1rem;
-        outline: none;
-        border: none;
-        background-color: #ffffff;
-        color: dodgerblue;
-        :hover {
-            cursor: pointer;
-            text-decoration: underline;
-            opacity: 0.8;
-        }
-    }
-`;
-
-const SearchInput = styled.input.attrs(() => ({
-    placeholder: 'Search for...',
-}))`
-    width: 100%;
-    padding: 5px;
-    font-size: 1rem;
-`;
-
-const StyledButton = styled(ButtonBase)`
-    padding: 10px;
-    font-size: 1rem;
-    font-weight: 500;
-    color: #ffffff;
-    background-color: #6c757d;
 `;
 
 const Title = styled.h1`

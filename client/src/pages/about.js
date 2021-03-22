@@ -7,17 +7,6 @@ import CommonLayout from 'components/Layout/CommonLayout';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-const settings = {
-    accessibility: true,
-    infinite: true,
-    centerMode: true,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    pauseOnHover: true,
-};
-
 const list = [
     {
         id: 1,
@@ -49,6 +38,17 @@ const list = [
     },
 ];
 
+const settings = {
+    accessibility: true,
+    infinite: true,
+    centerMode: true,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    pauseOnHover: true,
+};
+
 const About = () => {
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState('');
@@ -76,7 +76,7 @@ const About = () => {
                     </Box>
                     <Img src="./img/img1.png" />
                 </Section>
-                <Section card>
+                {/* <Section card>
                     <H1 spacing={'spacing'}>PORTFOLIO</H1>
                     <div>
                         <StyledSlider {...settings}>
@@ -91,9 +91,9 @@ const About = () => {
                             ))}
                         </StyledSlider>
                     </div>
-                </Section>
+                </Section> */}
             </CommonLayout>
-            <PofolModal title={title} open={open} setOpen={setOpen} />
+            {/* <PofolModal title={title} open={open} setOpen={setOpen} /> */}
         </>
     );
 };

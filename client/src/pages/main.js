@@ -1,14 +1,17 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 
 import Mini from 'components/Blog/Mini';
 import MainLayout from 'components/Layout/MainLayout';
+import Button from 'components/Parts/Button';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+const PYTHON_TEST = process.env.REACT_APP_PYTHON;
 
 const Main = () => {
     const [data, setData] = useState([]);
+    const [strResult, setStrResult] = useState('');
 
     useEffect(() => {
         const getPosts = async () => {
@@ -19,6 +22,18 @@ const Main = () => {
         getPosts().then(res => {
             setData(res);
         });
+    }, []);
+    const handleClick = useCallback(() => {
+        axios
+            .post(`${PYTHON_TEST}/python`, {
+                data: {
+                    name: '승현',
+                    message: '유레카',
+                },
+            })
+            .then(res => {
+                setStrResult(res.data);
+            });
     }, []);
 
     return (
@@ -34,13 +49,19 @@ const Main = () => {
                     </List>
                 </Section>
                 <Section>
+                    <StyledButton submit onClick={handleClick}>
+                        파이썬 스크립트 실행
+                    </StyledButton>
+                    <ResultBox>결과 = `{strResult}`</ResultBox>
+                </Section>
+                {/* <Section>
                     <Title>Blog - Recent posts</Title>
                     <List>
                         {data.map(post => (
                             <Mini key={post.id} post={post} />
                         ))}
                     </List>
-                </Section>
+                </Section> */}
             </Content>
         </MainLayout>
     );
@@ -62,6 +83,18 @@ const Section = styled.section`
     min-width: 410px;
     font-size: 1rem;
     line-height: 1.5;
+`;
+
+const ResultBox = styled.div`
+    transform: translateY(10px);
+    width: 300px;
+    height: 300px;
+    background-color: #ffffff;
+    font-size: 18px;
+    font-weight: 500;
+    border-radius: 50px;
+    padding: 30px;
+    color: #1e1e1e;
 `;
 
 const Title = styled.div`
@@ -86,4 +119,8 @@ const P = styled.p`
 
 const Li = styled.li`
     line-height: 1.8;
+`;
+
+const StyledButton = styled(Button)`
+    background-color: lightpink;
 `;

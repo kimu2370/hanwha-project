@@ -24,9 +24,9 @@ const NavBar = ({...p}) => {
                 id: 3,
                 label: 'Board',
                 dropdownList: [
-                    {id: 0, label: '자유 게시판', path: '/board/1'},
-                    {id: 1, label: 'Q&A', path: '/board/2'},
-                    {id: 2, label: '웹 사이트 자랑하기', path: '/board/3'},
+                    {id: 0, label: '자유 게시판', path: '/board'},
+                    // {id: 1, label: 'Q&A', path: '/board/2'},
+                    // {id: 2, label: '웹 사이트 자랑하기', path: '/board/3'},
                 ],
             },
         ],
@@ -80,7 +80,12 @@ const NavBar = ({...p}) => {
                                     {isVisible && (
                                         <Dropdown ref={dropdownRef}>
                                             {tab.dropdownList.map(x => (
-                                                <div key={x.id}>{x.label}</div>
+                                                <div
+                                                    key={x.id}
+                                                    onClick={() => moveToClickedPage(x)}
+                                                >
+                                                    {x.label}
+                                                </div>
                                             ))}
                                         </Dropdown>
                                     )}
