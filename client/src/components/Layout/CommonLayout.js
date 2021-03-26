@@ -3,9 +3,9 @@ import styled from 'styled-components';
 
 import Footer from 'components/Parts/Footer';
 
-const CommonLayout = ({children}) => {
+const CommonLayout = ({children, ...p}) => {
     return (
-        <Wrapper>
+        <Wrapper {...p}>
             {children}
             <Footer>Copyright © dev_Hyun 2021</Footer>
         </Wrapper>

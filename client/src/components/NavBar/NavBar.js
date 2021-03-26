@@ -18,7 +18,7 @@ const NavBar = ({...p}) => {
     const tabs = useMemo(
         () => [
             {id: 0, label: 'Home', path: '/'},
-            {id: 1, label: 'Blog', path: '/blog'},
+            {id: 1, label: 'Service', path: '/service'},
             {id: 2, label: 'About', path: '/about'},
             {
                 id: 3,
@@ -200,7 +200,7 @@ const Typography = styled.div`
     font-weight: bold;
     padding: 0 30px 0 0;
     transform-origin: center;
-    animation: ${flutter} 2s linear infinite;
+    /* animation: ${flutter} 2s linear infinite; */
 `;
 
 const Dropdown = styled.div`

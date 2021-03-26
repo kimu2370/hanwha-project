@@ -9,7 +9,7 @@ import Button from 'components/Parts/Button';
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 const PYTHON_TEST = process.env.REACT_APP_PYTHON;
 
-const Main = () => {
+const Service = () => {
     const [data, setData] = useState([]);
     const [strResult, setStrResult] = useState('');
 
@@ -44,7 +44,7 @@ const Main = () => {
                     <P>리액트는 사용자 인터페이스를 만들기 위한 JavaScript 라이브러리입니다.</P>
                     <List>
                         <Li>React는 상호작용이 많은 UI를 만들 때 생기는 어려움을 줄여줍니다.</Li>
-                        <Li>애플리케이션의 각 상태에 대한 간단한 뷰만 설계하세요.</Li>
+                        <Li>애플ㅍ리케이션의 각 상태에 대한 간단한 뷰만 설계하세요.</Li>
                         <Li>그럼 React는 데이터가 변경됨에 따라 적절한 컴포넌트만 갱신합니다.</Li>
                     </List>
                 </Section>
@@ -67,7 +67,7 @@ const Main = () => {
     );
 };
 
-export default Main;
+export default Service;
 
 const Content = styled.main`
     display: flex;
