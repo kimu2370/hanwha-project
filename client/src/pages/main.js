@@ -48,12 +48,12 @@ const Service = () => {
                         <Li>그럼 React는 데이터가 변경됨에 따라 적절한 컴포넌트만 갱신합니다.</Li>
                     </List>
                 </Section>
-                <Section>
+                {/* <Section>
                     <StyledButton submit onClick={handleClick}>
                         파이썬 스크립트 실행
                     </StyledButton>
                     <ResultBox>결과 = `{strResult}`</ResultBox>
-                </Section>
+                </Section> */}
                 {/* <Section>
                     <Title>Blog - Recent posts</Title>
                     <List>

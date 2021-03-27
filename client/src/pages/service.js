@@ -14,12 +14,12 @@ import StickyBox from 'components/Parts/StickyBox';
 const PYTHON_TEST = process.env.REACT_APP_PYTHON;
 
 const Blog = React.forwardRef((props, ref) => {
-    const history = useHistory();
-    const location = useLocation();
-    const [categories, setCategories] = useState([]);
+    // const history = useHistory();
+    // const location = useLocation();
+    // const [categories, setCategories] = useState([]);
 
-    const [posts, setPosts] = useState([]);
-    const query = useMemo(() => qs.parse(location.search.slice(1)), [location]);
+    // const [posts, setPosts] = useState([]);
+    // const query = useMemo(() => qs.parse(location.search.slice(1)), [location]);
 
     const [text1, setText1] = useState('');
     const [result, setResult] = useState('');
@@ -32,44 +32,37 @@ const Blog = React.forwardRef((props, ref) => {
         }
     }, [ref]);
 
-    const handleClickSearch = useCallback(
-        text => {
-            history.push({
-                pathname: location.pathname,
-                search: qs.stringify({q: text}),
-            });
-            if (ref && ref.current) {
-                ref.current.scrollIntoView(true);
-            }
-        },
-        [history, location.pathname, ref]
-    );
+    // const handleClickSearch = useCallback(
+    //     text => {
+    //         history.push({
+    //             pathname: location.pathname,
+    //             search: qs.stringify({q: text}),
+    //         });
+    //         if (ref && ref.current) {
+    //             ref.current.scrollIntoView(true);
+    //         }
+    //     },
+    //     [history, location.pathname, ref]
+    // );
 
     const handleChange = useCallback(e => {
         setText1(e.target.value);
     }, []);
 
-    const handleClick = useCallback(() => {
-        axios
-            .post(`${PYTHON_TEST}/write`, {
-                data: {
-                    text: text1,
-                },
-            })
-            .then(res => {
-                if (res.data.payload) {
-                    axios
-                        .post(`${PYTHON_TEST}/python`, {
-                            data: {
-                                text: text1,
-                            },
-                        })
-                        .then(res => {
-                            setResult(res.data);
-                        });
-                }
-            });
-    }, [text1]);
+    const handleClick = async () => {
+        const fetchWrite = await axios.post(`${PYTHON_TEST}/write`, {
+            data: {
+                text: text1,
+            },
+        });
+
+        if (!fetchWrite.data.payload) return;
+
+        const fetchRead = await axios.get(`${PYTHON_TEST}/read`);
+
+        console.log(fetchRead);
+        setResult(fetchRead.data);
+    };
 
     // useEffect(() => {
     //get result text
@@ -108,7 +101,9 @@ const Blog = React.forwardRef((props, ref) => {
         <StyledLayout>
             <Wrapper>
                 <Container>
-                    <Title>Service {query.q && <Tag>{query.q}</Tag>}</Title>
+                    {/* <Title>Service {query.q && <Tag>{query.q}</Tag>}</Title> */}
+                    <Title>Sevice</Title>
+                    <SubTitle>저장 버튼을 누르면 파일을 저장 후 결과창이 나옵니다.</SubTitle>
                     입력:
                     <TextArea type="text" onChange={handleChange} value={text1} />
                     <InputBox>
@@ -122,7 +117,7 @@ const Blog = React.forwardRef((props, ref) => {
                         })}
                     </Posts> */}
                 </Container>
-                <StickyBox categories={categories} onClickSearch={handleClickSearch} />
+                {/* <StickyBox categories={categories} onClickSearch={handleClickSearch} /> */}
             </Wrapper>
             <ArrowUp onClick={handleClickUp} />
         </StyledLayout>
@@ -145,6 +140,7 @@ const InputBox = styled.div`
 const TextArea = styled.textarea.attrs(() => ({
     type: 'text',
 }))`
+    padding: 10px;
     width: 500px;
     height: 100px;
     resize: none;
@@ -152,7 +148,8 @@ const TextArea = styled.textarea.attrs(() => ({
 
 const Button = styled(ButtonBase)`
     margin-left: 20px;
-    font-size: 14px;
+    font-size: 1rem;
+    padding: 8px 1.2rem;
     font-weight: 700;
     line-height: 1;
     color: #ffffff;
@@ -160,6 +157,7 @@ const Button = styled(ButtonBase)`
 `;
 
 const ResultBox = styled.div`
+    padding: 10px;
     width: 500px;
     height: 300px;
     border: 1px solid black;
@@ -183,6 +181,13 @@ const Container = styled.div`
 const Title = styled.h1`
     text-align: left;
     font-size: 2.5rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+`;
+
+const SubTitle = styled.h3`
+    text-align: left;
+    font-size: 1.5rem;
     font-weight: 500;
     margin-bottom: 0.5rem;
 `;
