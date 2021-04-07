@@ -23,6 +23,7 @@ const Blog = React.forwardRef((props, ref) => {
 
     const [text1, setText1] = useState('');
     const [result, setResult] = useState('');
+    const [check, setCheck] = useState(false);
 
     const handleClickUp = useCallback(() => {
         if (ref && ref.current) {
@@ -53,6 +54,7 @@ const Blog = React.forwardRef((props, ref) => {
         const fetchWrite = await axios.post(`${PYTHON_TEST}/write`, {
             data: {
                 text: text1,
+                checked: check,
             },
         });
 
@@ -63,6 +65,11 @@ const Blog = React.forwardRef((props, ref) => {
         console.log(fetchRead);
         setResult(fetchRead.data);
     };
+
+    const handleCheck = useCallback(() => {
+        setCheck(!check);
+        // check && python 파일 실행
+    }, [check]);
 
     // useEffect(() => {
     //get result text
@@ -108,6 +115,16 @@ const Blog = React.forwardRef((props, ref) => {
                     <TextArea type="text" onChange={handleChange} value={text1} />
                     <InputBox>
                         <Button onClick={handleClick}>저장</Button>
+                        <CheckBox>
+                            <input
+                                type="checkbox"
+                                id="check"
+                                name="check"
+                                checked={check}
+                                onChange={handleCheck}
+                            />
+                            <label for="check">execute</label>
+                        </CheckBox>
                     </InputBox>
                     결과:
                     <ResultBox>{result}</ResultBox>
@@ -154,6 +171,10 @@ const Button = styled(ButtonBase)`
     line-height: 1;
     color: #ffffff;
     background-color: dodgerblue;
+`;
+
+const CheckBox = styled.div`
+    margin-left: 1rem;
 `;
 
 const ResultBox = styled.div`

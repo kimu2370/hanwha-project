@@ -19,6 +19,13 @@ app.post('/write', async (req, res) => {
         }
     });
 
+    if (data.checked) {
+        // await 전처리 실행
+        await console.log('checked 전처리 실행');
+    }
+
+    console.log('전처리가 있거나 없거나 실행됨.');
+
     const result = await spawn('python', ['print.py', `${data.text}`]);
 
     result.stdout.on('data', data => {
