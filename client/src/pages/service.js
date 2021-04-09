@@ -10,6 +10,40 @@ import CommonLayout from 'components/Layout/CommonLayout';
 import ButtonBase from 'components/Parts/Button';
 import StickyBox from 'components/Parts/StickyBox';
 
+// AF   #2F4F4F
+// AM   #A0522D
+// TR   #006400
+// PS   #F7CACA
+// DT   #FF0000
+// PT   #00FF00
+// EV   #00CED1
+// LC   #FFA500
+// TI   #FFFF00
+// QT   #0000FF
+// MT   #FF00FF
+// OG   #6495ED
+// CV   #FF1493
+// FD   #98FB98
+// TM   #4B0082
+
+const colors = [
+    {id: 'AF', color: '#2F4F4F'},
+    {id: 'AM', color: '#A0522D'},
+    {id: 'TR', color: '#006400'},
+    {id: 'PS', color: '#F7CACA'},
+    {id: 'DT', color: '#FF0000'},
+    {id: 'PT', color: '#00FF00'},
+    {id: 'EV', color: '#00CED1'},
+    {id: 'LC', color: '#FFA500'},
+    {id: 'TI', color: '#FFFF00'},
+    {id: 'QT', color: '#0000FF'},
+    {id: 'MT', color: '#FF00FF'},
+    {id: 'OG', color: '#6495ED'},
+    {id: 'CV', color: '#FF1493'},
+    {id: 'FD', color: '#98FB98'},
+    {id: 'TM', color: '#4B0082'},
+];
+
 // const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 const PYTHON_TEST = process.env.REACT_APP_PYTHON;
 
@@ -62,9 +96,45 @@ const Blog = React.forwardRef((props, ref) => {
 
         const fetchRead = await axios.get(`${PYTHON_TEST}/read`);
 
-        console.log(fetchRead);
+        // console.log(fetchRead);
         setResult(fetchRead.data);
     };
+
+    const visualizedText = useCallback(text => {
+        const regex = /\[(.*?)\]/gm;
+        let str = `직업에는 다양한 것들이 있는데[CEO,:CV-B][CTO,:AF-B] [메이크업:CV-B] [아티스트:DT-I] 등이 있다.`;
+        let m;
+        let arr = [];
+
+        while ((m = regex.exec(str)) !== null) {
+            // This is necessary to avoid infinite loops with zero-width matches
+            if (m.index === regex.lastIndex) {
+                regex.lastIndex++;
+            }
+
+            // The result can be accessed through the `m`-variable.
+            m.forEach((match, groupIndex) => {
+                if (groupIndex === 0) {
+                    colors.forEach(x => {
+                        if (match.includes(x.id)) {
+                            arr.push({
+                                id: m.index,
+                                origin: match,
+                                html: `<span style="border: 3px solid ${x.color}; border-radius: 8px;margin: 0 5px;">${match}<span style="background-color: ${x.color}; display: inline-block;">${x.id}</span></span>`,
+                            });
+                        }
+                    });
+                }
+            });
+        }
+
+        arr.forEach(obj => {
+            str = str.replace(obj.origin, obj.html);
+        }, []);
+        console.log(arr);
+
+        return str;
+    }, []);
 
     const handleCheck = useCallback(() => {
         setCheck(!check);
@@ -112,9 +182,8 @@ const Blog = React.forwardRef((props, ref) => {
                     <Title>Sevice</Title>
                     <SubTitle>저장 버튼을 누르면 파일을 저장 후 결과창이 나옵니다.</SubTitle>
                     입력:
-                    <TextArea type="text" onChange={handleChange} value={text1} />
-                    <InputBox>
-                        <Button onClick={handleClick}>저장</Button>
+                    <Div>
+                        <TextArea type="text" onChange={handleChange} value={text1} />
                         <CheckBox>
                             <input
                                 type="checkbox"
@@ -123,11 +192,14 @@ const Blog = React.forwardRef((props, ref) => {
                                 checked={check}
                                 onChange={handleCheck}
                             />
-                            <label for="check">execute</label>
+                            <label>execute</label>
                         </CheckBox>
+                    </Div>
+                    <InputBox>
+                        <Button onClick={handleClick}>저장</Button>
                     </InputBox>
                     결과:
-                    <ResultBox>{result}</ResultBox>
+                    <ResultBox dangerouslySetInnerHTML={{__html: visualizedText(result)}} />
                     {/* <Posts>
                         {posts.map(post => {
                             return <StyledPost key={post.id} post={post} />;
@@ -142,6 +214,8 @@ const Blog = React.forwardRef((props, ref) => {
 });
 
 export default Blog;
+
+const HighLightingText = styled.span``;
 
 const StyledLayout = styled(CommonLayout)`
     height: calc(100% - 63px);
@@ -163,6 +237,11 @@ const TextArea = styled.textarea.attrs(() => ({
     resize: none;
 `;
 
+const Div = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
 const Button = styled(ButtonBase)`
     margin-left: 20px;
     font-size: 1rem;
@@ -178,10 +257,13 @@ const CheckBox = styled.div`
 `;
 
 const ResultBox = styled.div`
+    display: flex;
+    align-items: center;
     padding: 10px;
-    width: 500px;
-    height: 300px;
-    border: 1px solid black;
+    width: 800px;
+    letter-spacing: 1.1;
+    line-height: 1.5;
+    /* border: 1px solid black; */
 `;
 
 const Wrapper = styled.div`
